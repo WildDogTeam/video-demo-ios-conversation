@@ -5,7 +5,7 @@ target 'WilddogVideoQuickStart' do
   # Uncomment this line if you're using Swift or would like to use dynamic frameworks
   # use_frameworks!
 
-  pod 'WilddogVideo’
+  pod 'WilddogVideo'
 
   target 'WilddogVideoQuickStartTests' do
     inherit! :search_paths
@@ -13,3 +13,4 @@ target 'WilddogVideoQuickStart' do
   end
 
 end
+
