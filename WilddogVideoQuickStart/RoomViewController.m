@@ -106,7 +106,7 @@
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"邀请" message:[NSString stringWithFormat:@"正在邀请 %@ 进行视频通话", userID] preferredStyle:UIAlertControllerStyleAlert];
 
     __block RoomViewController *strongSelf = self;
-    WDGVideoOutgoingInvite *outgoingInvitation = [self.wilddogVideoClient inviteUser:userID localStream:self.localStream conversationMode:WDGVideoConversationModeBasic completion:^(WDGVideoConversation * _Nullable conversation, NSError * _Nullable error) {
+    WDGVideoOutgoingInvite *outgoingInvitation = [self.wilddogVideoClient inviteUser:userID localStream:self.localStream conversationMode:WDGVideoConversationModeP2P completion:^(WDGVideoConversation * _Nullable conversation, NSError * _Nullable error) {
         [alertController dismissViewControllerAnimated:YES completion:nil];
         if (conversation) {
             self.videoConversation = conversation;
