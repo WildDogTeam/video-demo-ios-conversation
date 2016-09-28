@@ -6,23 +6,27 @@
 //  Copyright © 2016年 liwuyang. All rights reserved.
 //
 
-#import "RoomViewController.h"
 #import <WilddogSync/WilddogSync.h>
 #import <WilddogVideo/WilddogVideo.h>
+
+#import "RoomViewController.h"
 #import "UserListTableViewController.h"
+
 @interface RoomViewController ()<WDGVideoClientDelegate, WDGVideoConversationDelegate>
 
-@property(nonatomic, strong) WDGSyncReference *wilddog;
-@property(nonatomic, strong)WDGVideoClient *wilddogVideoClient;
-@property(nonatomic, strong)WDGVideoLocalStream *localStream;
-@property(nonatomic, strong)WDGVideoConversation *videoConversation;
 @property (weak, nonatomic) IBOutlet WDGVideoView *localVideoView;
-@property(nonatomic, strong) WDGVideoRemoteStream *remoteStream;
 @property (weak, nonatomic) IBOutlet WDGVideoView *remoteVideoView;
-@property(nonatomic, strong)NSString *myUserID;
-@property(nonatomic, strong)NSMutableArray *onlineUsers;
 @property (weak, nonatomic) IBOutlet UIButton *userListBtn;
 @property (weak, nonatomic) IBOutlet UILabel *uidLab;
+
+@property (nonatomic, strong) WDGSyncReference *wilddog;
+@property (nonatomic, strong) WDGVideoClient *wilddogVideoClient;
+@property (nonatomic, strong) WDGVideoLocalStream *localStream;
+@property (nonatomic, strong) WDGVideoRemoteStream *remoteStream;
+@property (nonatomic, strong) WDGVideoConversation *videoConversation;
+
+@property (nonatomic, strong) NSString *myUserID;
+@property (nonatomic, strong) NSMutableArray *onlineUsers;
 
 @end
 
@@ -30,14 +34,15 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
     self.myUserID = self.wDGUser.uid;
     self.wilddog = [[WDGSync sync] reference];
 
     self.uidLab.text = self.myUserID;
     [self setupWilddogVideoClient];
-
 }
+
+#pragma mark - Action
 
 - (IBAction)clickUserList:(id)sender {
     if (!self.remoteStream) {
@@ -46,11 +51,12 @@
         self.userListBtn.titleLabel.text = @"用户列表";
         [self.videoConversation disconnect];
         [self.remoteStream detach:self.remoteVideoView];
+        self.remoteStream = nil;
         self.videoConversation = nil;
     }
 }
 
-#pragma mark - Navigation
+#pragma mark - Segue
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 
@@ -58,6 +64,7 @@
     viewController.userID = self.myUserID;
     viewController.wilddog = self.wilddog;
     __block RoomViewController *strongSelf = self;
+    // 当用户列表选择用户后邀请用户
     viewController.selectedUserBlock = ^(NSString *userID) {
 
         [strongSelf inviteAUser:userID];
@@ -65,46 +72,49 @@
     };
 }
 
--(void)setupWilddogVideoClient {
+#pragma mark - Helper
 
-    WDGSyncReference *userWilddog = [[self.wilddog child:@"users"] child:self.myUserID];
-    [userWilddog setValue:@YES];
-    [userWilddog onDisconnectRemoveValue];
-
+- (void)setupWilddogVideoClient {
+    // 认证成功，初始化Client
     self.wilddogVideoClient = [[WDGVideoClient alloc] initWithSyncReference:self.wilddog user:self.wDGUser];
     self.wilddogVideoClient.delegate = self;
 
-    [self startPreview];
+    // 创建本地流并预览
+    [self createLocalStream];
+    [self previewLocalStream];
 
-     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForegroundNotification:) name:UIApplicationWillEnterForegroundNotification object:nil];
+    // SDK本身不提供管理在线用户的接口，因此建立users节点管理在线用户列表
+    WDGSyncReference *userWilddog = [[self.wilddog child:@"users"] child:self.myUserID];
+    [userWilddog setValue:@YES];
+    [userWilddog onDisconnectRemoveValue];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appWillEnterForegroundNotification:) name:UIApplicationWillEnterForegroundNotification object:nil];
 }
 
--(void)appWillEnterForegroundNotification:(NSNotification *)notification {
+- (void)appWillEnterForegroundNotification:(NSNotification *)notification {
     WDGSyncReference *userWilddog = [[self.wilddog child:@"users"] child:self.myUserID];
     [userWilddog setValue:@YES];
     [userWilddog onDisconnectRemoveValue];
 }
 
--(void)startPreview {
-
-#if !TARGET_IPHONE_SIMULATOR
-    WDGVideoLocalStreamConfiguration *configuration = [[WDGVideoLocalStreamConfiguration alloc] initWithVideoOption:WDGVideoConstraintsStandard16x9 audioOn:YES];
+- (void)createLocalStream {
+    WDGVideoLocalStreamConfiguration *configuration = [[WDGVideoLocalStreamConfiguration alloc] initWithVideoOption:WDGVideoConstraintsStandard audioOn:YES];
     self.localStream = [self.wilddogVideoClient localStreamWithConfiguration:configuration];
-#else
-    //diable camera controls if on the simulator
-#endif
+}
+
+- (void)previewLocalStream {
     if (self.localStream) {
         [self.localStream attach:self.localVideoView];
     }
-    
 }
 
-#pragma mark - Invite a User
+#pragma mark - Invite User
 
--(void)inviteAUser:(NSString *)userID {
+- (void)inviteAUser:(NSString *)userID {
 
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"邀请" message:[NSString stringWithFormat:@"正在邀请 %@ 进行视频通话", userID] preferredStyle:UIAlertControllerStyleAlert];
 
+    // 采用P2P模式，调用VideoSDK进行邀请
     __block RoomViewController *strongSelf = self;
     WDGVideoOutgoingInvite *outgoingInvitation = [self.wilddogVideoClient inviteUser:userID localStream:self.localStream conversationMode:WDGVideoConversationModeP2P completion:^(WDGVideoConversation * _Nullable conversation, NSError * _Nullable error) {
         [alertController dismissViewControllerAnimated:YES completion:nil];
@@ -115,10 +125,7 @@
             NSString *errorMessage = [NSString stringWithFormat:@"邀请用户错误(%@): %@", userID, [error localizedDescription]];
             NSLog(@"%@",errorMessage);
 
-            UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"视频通话邀请被对方拒绝" preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:nil];
-            [alertController addAction:okAction];
-            [strongSelf presentViewController:alertController animated:YES completion:nil];
+            [strongSelf displayErrorMessage:@"视频通话邀请被对方拒绝"];
         }
     }];
 
@@ -129,16 +136,16 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-#pragma mark - Display an Error
+#pragma mark - Display Error
 
-- (void) displayErrorMessage:(NSString*)errorMessage {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:@"视频通话邀请被对方拒绝" preferredStyle:UIAlertControllerStyleAlert];
+- (void)displayErrorMessage:(NSString *)errorMessage {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"提示" message:errorMessage preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:nil];
     [alertController addAction:okAction];
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-#pragma -mark WDGVideoClientDelegate
+#pragma mark - WDGVideoClientDelegate
 
 - (void)wilddogVideoClient:(WDGVideoClient *)videoClient didReceiveInvite:(WDGVideoIncomingInvite *)invite {
 
@@ -149,7 +156,7 @@
 
     UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"接受" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         __block RoomViewController *strongSelf = self;
-        [invite acceptWithCompletionHandler:^(WDGVideoConversation * _Nullable conversation, NSError * _Nullable error) {
+        [invite acceptWithCompletion:^(WDGVideoConversation * _Nullable conversation, NSError * _Nullable error) {
             if (error) {
                 NSLog(@"error: %@", [error localizedDescription]);
                 return ;
@@ -157,10 +164,9 @@
 
             strongSelf.videoConversation = conversation;
             strongSelf.videoConversation.delegate = self;
-
         }];
-
     }];
+
     [alertController addAction:rejectAction];
     [alertController addAction:acceptAction];
     [self presentViewController:alertController animated:YES completion:nil];
@@ -170,20 +176,20 @@
 
 }
 
-#pragma -mark WDGVideoConversationDelegate
+#pragma mark - WDGVideoConversationDelegate
+
 
 - (void)conversation:(WDGVideoConversation *)conversation didConnectParticipant:(WDGVideoParticipant *)participant {
-
+    // 参与者成功加入会话，将参与者的视频流展示出来
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.remoteStream  = participant.stream;
+        self.remoteStream = participant.stream;
         [self.remoteStream attach:self.remoteVideoView];
         self.userListBtn.titleLabel.text = @"挂断";
     });
-
 }
 
 - (void)conversation:(WDGVideoConversation *)conversation didFailToConnectParticipant:(WDGVideoParticipant *)participant error:(NSError *)error {
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"通话失败" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"连接失败" message:nil preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"好的" style:UIAlertActionStyleDefault handler:nil];
     [alertController addAction:okAction];
     [self presentViewController:alertController animated:YES completion:nil];
@@ -199,24 +205,6 @@
         [self.remoteStream detach:self.remoteVideoView];
         self.videoConversation = nil;
     });
-
 }
-
-
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
