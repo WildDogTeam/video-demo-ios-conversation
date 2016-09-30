@@ -11,7 +11,6 @@
 
 @interface RoomViewController : UIViewController
 
-@property(nonatomic, strong)NSString *appid;
-@property(nonatomic, strong)WDGUser *wDGUser;
+@property (nonatomic, strong) WDGUser *user;
 
 @end

@@ -27,10 +27,8 @@
 }
 
 - (void)setupOnlineUserMonitoring {
-
     __block UserListTableViewController *strongSelf = self;
-    [[self.wilddog child:@"users"] observeSingleEventOfType:WDGDataEventTypeValue withBlock:^(WDGDataSnapshot * _Nonnull snapshot) {
-
+    [[self.syncReference child:@"users"] observeSingleEventOfType:WDGDataEventTypeValue withBlock:^(WDGDataSnapshot *snapshot) {
         NSDictionary *userDict = snapshot.value;
         for (NSString *userID in userDict.allKeys) {
             if (![userID isEqualToString:self.userID]) {
@@ -38,14 +36,12 @@
             }
         }
         [strongSelf.tableView reloadData];
-
     }];
 }
 
 #pragma mark - UITableViewDataSource
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
     static NSString *cellIdentify = @"userCell";
     UserTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentify];
     cell.titleLab.text = self.onlineUsers[indexPath.row];
