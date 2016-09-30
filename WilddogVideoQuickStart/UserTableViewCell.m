@@ -10,20 +10,10 @@
 
 @implementation UserTableViewCell
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    // Initialization code
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
-}
-
 - (IBAction)clickInviteBtn:(id)sender {
     if (self.clickInviteUserBlock) {
-         self.clickInviteUserBlock(self.titleLab.text);
+         self.clickInviteUserBlock(self.titleLabel.text);
     }
 }
+
 @end

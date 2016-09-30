@@ -37,7 +37,7 @@
             return;
         }
 
-         [strongSelf performSegueWithIdentifier:@"RoomViewController" sender:user];
+        [strongSelf performSegueWithIdentifier:@"RoomViewController" sender:user];
     }];
 }
 

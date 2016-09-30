@@ -8,9 +8,10 @@
 
 #import "UserListTableViewController.h"
 #import "UserTableViewCell.h"
+
 @interface UserListTableViewController ()
 
-@property (nonatomic, strong) NSMutableArray *onlineUsers;
+@property (nonatomic, strong) NSArray *onlineUsers;
 
 @end
 
@@ -19,34 +20,32 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-    self.onlineUsers = [@[] mutableCopy];
+    self.onlineUsers = [[NSArray alloc] init];
     self.title = @"用户列表";
+
     // 监听在线用户
     [self setupOnlineUserMonitoring];
     
 }
 
-- (void)setupOnlineUserMonitoring {
-    __block UserListTableViewController *strongSelf = self;
-    [[self.syncReference child:@"users"] observeSingleEventOfType:WDGDataEventTypeValue withBlock:^(WDGDataSnapshot *snapshot) {
-        NSDictionary *userDict = snapshot.value;
-        for (NSString *userID in userDict.allKeys) {
-            if (![userID isEqualToString:self.userID]) {
-                [strongSelf.onlineUsers addObject:userID];
-            }
-        }
-        [strongSelf.tableView reloadData];
-    }];
-}
-
 #pragma mark - UITableViewDataSource
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    return self.onlineUsers.count;
+}
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *cellIdentify = @"userCell";
     UserTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentify];
-    cell.titleLab.text = self.onlineUsers[indexPath.row];
-    __block UserListTableViewController *strongSelf = self;
+    cell.titleLabel.text = self.onlineUsers[indexPath.row];
+
+    __weak __typeof__(self) weakSelf = self;
     cell.clickInviteUserBlock = ^(NSString *title) {
+        __strong __typeof__(self) strongSelf = weakSelf;
+        if (strongSelf == nil) {
+            return;
+        }
+
         if (strongSelf.selectedUserBlock) {
             [strongSelf.navigationController popViewControllerAnimated:YES];
             strongSelf.selectedUserBlock(title);
@@ -56,9 +55,25 @@
     return cell;
 }
 
+#pragma mark - Helper
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.onlineUsers.count;
+- (void)setupOnlineUserMonitoring {
+    __weak __typeof__(self) weakSelf = self;
+    [[self.syncReference child:@"users"] observeSingleEventOfType:WDGDataEventTypeValue withBlock:^(WDGDataSnapshot *snapshot) {
+        __strong __typeof__(self) strongSelf = weakSelf;
+        if (strongSelf == nil) {
+            return;
+        }
+
+        NSMutableArray *onlineUsers = [[NSMutableArray alloc] init];
+        for (WDGDataSnapshot *userSnapshot in snapshot.children) {
+            if (![userSnapshot.key isEqualToString:self.userID]) {
+                [onlineUsers addObject:userSnapshot.key];
+            }
+        }
+        strongSelf.onlineUsers = [onlineUsers copy];
+        [strongSelf.tableView reloadData];
+    }];
 }
 
 @end

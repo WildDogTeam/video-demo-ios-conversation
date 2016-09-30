@@ -108,8 +108,8 @@
         [alertController dismissViewControllerAnimated:YES completion:nil];
 
         if (conversation != nil) {
-            self.videoConversation = conversation;
-            self.videoConversation.delegate = self;
+            strongSelf.videoConversation = conversation;
+            strongSelf.videoConversation.delegate = strongSelf;
         } else {
             NSString *errorMessage = [NSString stringWithFormat:@"邀请用户错误(%@): %@", userID, [error localizedDescription]];
             NSLog(@"%@",errorMessage);

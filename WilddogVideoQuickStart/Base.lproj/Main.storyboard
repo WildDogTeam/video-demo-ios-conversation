@@ -160,7 +160,6 @@
                         <outlet property="localVideoView" destination="xHO-Wo-Zj2" id="QoW-Sx-p1E"/>
                         <outlet property="remoteVideoView" destination="i9x-un-gKC" id="ICw-YY-vBT"/>
                         <outlet property="uidLabel" destination="9I8-BS-j0f" id="gGb-rM-WtP"/>
-                        <outlet property="userListBtn" destination="RQD-Ri-Myo" id="P9Q-YW-OQF"/>
                         <outlet property="userListButton" destination="RQD-Ri-Myo" id="Iaz-0w-gpE"/>
                         <segue destination="fK6-3H-AAa" kind="show" identifier="UserListTableViewController" id="nrS-0c-m33"/>
                     </connections>
@@ -213,7 +212,7 @@
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="titleLab" destination="PZr-qV-cvf" id="VHw-Lg-cKC"/>
+                                    <outlet property="titleLabel" destination="PZr-qV-cvf" id="bVs-2A-Dgp"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

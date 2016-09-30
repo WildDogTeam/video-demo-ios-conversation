@@ -12,7 +12,7 @@ typedef void (^ClickInviteUser)(NSString *title);
 
 @interface UserTableViewCell : UITableViewCell
 
-@property(nonatomic, strong)ClickInviteUser clickInviteUserBlock;
-@property (weak, nonatomic) IBOutlet UILabel *titleLab;
+@property (weak, nonatomic) IBOutlet UILabel *titleLabel;
+@property (nonatomic, strong) ClickInviteUser clickInviteUserBlock;
 
 @end
