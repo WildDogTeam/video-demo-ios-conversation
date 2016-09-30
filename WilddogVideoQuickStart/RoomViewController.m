@@ -129,20 +129,24 @@
 
 - (void)wilddogVideoClient:(WDGVideoClient *)videoClient didReceiveInvite:(WDGVideoIncomingInvite *)invite {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:[NSString stringWithFormat:@"%@ 邀请你进行视频通话", invite.fromUserID] preferredStyle:UIAlertControllerStyleAlert];
-    UIAlertAction *rejectAction = [UIAlertAction actionWithTitle:@"拒绝" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+    UIAlertAction *rejectAction = [UIAlertAction actionWithTitle:@"拒绝" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         [invite reject];
     }];
 
-    UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"接受" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        __block RoomViewController *strongSelf = self;
-        [invite acceptWithCompletion:^(WDGVideoConversation * _Nullable conversation, NSError * _Nullable error) {
+    __weak __typeof__(self) weakSelf = self;
+    UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"接受" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        [invite acceptWithCompletion:^(WDGVideoConversation *conversation, NSError *error) {
+            __strong __typeof__(self) strongSelf = weakSelf;
+            if (strongSelf == nil) {
+                return;
+            }
             if (error) {
                 NSLog(@"error: %@", [error localizedDescription]);
                 return ;
             }
 
             strongSelf.videoConversation = conversation;
-            strongSelf.videoConversation.delegate = self;
+            strongSelf.videoConversation.delegate = strongSelf;
         }];
     }];
 
