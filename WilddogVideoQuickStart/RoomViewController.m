@@ -48,6 +48,9 @@
     [self createLocalStream];
     [self previewLocalStream];
 
+    self.localVideoView.contentMode = UIViewContentModeScaleAspectFill;
+    self.remoteVideoView.contentMode = UIViewContentModeScaleAspectFill;
+
     // SDK本身不提供管理在线用户的接口，因此建立users节点管理在线用户列表
     WDGSyncReference *userWilddog = [[self.syncReference child:@"users"] child:self.user.uid];
     [userWilddog setValue:@YES];
