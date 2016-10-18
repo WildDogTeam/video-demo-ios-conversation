@@ -20,11 +20,13 @@
 
 @implementation ViewController
 
-- (IBAction)clickBtn:(id)sender {
-
+- (IBAction)clickBtn:(id)sender
+{
     [WDGApp configureWithOptions:[[WDGOptions alloc] initWithSyncURL:[NSString stringWithFormat:@"https://%@.wilddogio.com", self.textField.text]]];
 
     // 使用VideoSDK前必须经过WilddogAuth身份认证
+    [[WDGAuth auth] signOut:nil];
+
     __weak __typeof__(self) weakSelf = self;
     [[WDGAuth auth] signInAnonymouslyWithCompletion:^(WDGUser * _Nullable user, NSError * _Nullable error) {
         __strong __typeof__(self) strongSelf = weakSelf;
@@ -43,7 +45,8 @@
 
 #pragma mark - Navigation
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
     RoomViewController *viewController = (RoomViewController *)[segue destinationViewController];
     viewController.user = sender;
 }

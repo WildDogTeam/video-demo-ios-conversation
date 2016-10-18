@@ -17,7 +17,8 @@
 
 @implementation UserListTableViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
 
     self.onlineUsers = [[NSArray alloc] init];
@@ -30,17 +31,18 @@
 
 #pragma mark - UITableViewDataSource
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     return self.onlineUsers.count;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *cellIdentify = @"userCell";
-    UserTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentify];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    UserTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"userCell"];
     cell.titleLabel.text = self.onlineUsers[indexPath.row];
 
     __weak __typeof__(self) weakSelf = self;
-    cell.clickInviteUserBlock = ^(NSString *title) {
+    cell.inviteUserBlock = ^(NSString *title) {
         __strong __typeof__(self) strongSelf = weakSelf;
         if (strongSelf == nil) {
             return;
@@ -57,9 +59,10 @@
 
 #pragma mark - Helper
 
-- (void)setupOnlineUserMonitoring {
+- (void)setupOnlineUserMonitoring
+{
     __weak __typeof__(self) weakSelf = self;
-    [[self.syncReference child:@"users"] observeSingleEventOfType:WDGDataEventTypeValue withBlock:^(WDGDataSnapshot *snapshot) {
+    [self.usersReference observeEventType:WDGDataEventTypeValue withBlock:^(WDGDataSnapshot *snapshot) {
         __strong __typeof__(self) strongSelf = weakSelf;
         if (strongSelf == nil) {
             return;
@@ -67,7 +70,7 @@
 
         NSMutableArray *onlineUsers = [[NSMutableArray alloc] init];
         for (WDGDataSnapshot *userSnapshot in snapshot.children) {
-            if (![userSnapshot.key isEqualToString:self.userID]) {
+            if (![userSnapshot.key isEqualToString:strongSelf.userID]) {
                 [onlineUsers addObject:userSnapshot.key];
             }
         }

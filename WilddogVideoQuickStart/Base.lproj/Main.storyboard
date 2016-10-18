@@ -116,7 +116,7 @@
                                 </constraints>
                                 <state key="normal" title="用户列表"/>
                                 <connections>
-                                    <action selector="clickUserList:" destination="o9Z-eu-0nS" eventType="touchUpInside" id="VOr-Pk-6O4"/>
+                                    <action selector="actionButtonTapped:" destination="o9Z-eu-0nS" eventType="touchUpInside" id="Dzi-v8-4qD"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="你的Wilddog ID:  " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="78b-01-h4M">
@@ -157,10 +157,10 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="actionButton" destination="RQD-Ri-Myo" id="33f-ch-rgz"/>
                         <outlet property="localVideoView" destination="xHO-Wo-Zj2" id="QoW-Sx-p1E"/>
                         <outlet property="remoteVideoView" destination="i9x-un-gKC" id="ICw-YY-vBT"/>
-                        <outlet property="uidLabel" destination="9I8-BS-j0f" id="gGb-rM-WtP"/>
-                        <outlet property="userListButton" destination="RQD-Ri-Myo" id="Iaz-0w-gpE"/>
+                        <outlet property="wilddogIDLabel" destination="9I8-BS-j0f" id="EZ6-9R-WHm"/>
                         <segue destination="fK6-3H-AAa" kind="show" identifier="UserListTableViewController" id="nrS-0c-m33"/>
                     </connections>
                 </viewController>
@@ -191,7 +191,7 @@
                                             </constraints>
                                             <state key="normal" title="邀请"/>
                                             <connections>
-                                                <action selector="clickInviteBtn:" destination="4VY-mV-g2a" eventType="touchUpInside" id="MvU-r9-vGJ"/>
+                                                <action selector="inviteButtonTapped:" destination="4VY-mV-g2a" eventType="touchUpInside" id="och-60-whu"/>
                                             </connections>
                                         </button>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PZr-qV-cvf">

@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-typedef void (^ClickInviteUser)(NSString *title);
+typedef void (^WDGInviteUserHandler)(NSString *title);
 
 @interface UserTableViewCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *titleLabel;
-@property (nonatomic, strong) ClickInviteUser clickInviteUserBlock;
+@property (nonatomic, strong) WDGInviteUserHandler inviteUserBlock;
 
 @end

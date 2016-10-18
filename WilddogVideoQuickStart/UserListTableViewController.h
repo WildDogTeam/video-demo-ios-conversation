@@ -9,12 +9,12 @@
 #import <UIKit/UIKit.h>
 #import <WilddogSync/WilddogSync.h>
 
-typedef void (^selectedUser)(NSString *user);
+typedef void (^WDGSelectedUser)(NSString *user);
 
 @interface UserListTableViewController : UITableViewController
 
 @property (nonatomic, assign) NSString *userID;
-@property (nonatomic, strong) WDGSyncReference *syncReference;
-@property (nonatomic, strong) selectedUser selectedUserBlock;
+@property (nonatomic, strong) WDGSyncReference *usersReference;
+@property (nonatomic, strong) WDGSelectedUser selectedUserBlock;
 
 @end

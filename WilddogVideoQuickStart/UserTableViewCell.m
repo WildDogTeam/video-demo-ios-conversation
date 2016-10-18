@@ -10,9 +10,10 @@
 
 @implementation UserTableViewCell
 
-- (IBAction)clickInviteBtn:(id)sender {
-    if (self.clickInviteUserBlock) {
-         self.clickInviteUserBlock(self.titleLabel.text);
+- (IBAction)inviteButtonTapped:(id)sender
+{
+    if (self.inviteUserBlock) {
+         self.inviteUserBlock(self.titleLabel.text);
     }
 }
 
