@@ -113,7 +113,7 @@
 
     // 采用P2P模式，调用VideoSDK进行邀请
     __weak __typeof__(self) weakSelf = self;
-    WDGVideoOutgoingInvite *outgoingInvitation = [self.wilddogVideoClient inviteUser:userID localStream:self.localStream conversationMode:WDGVideoConversationModeP2P completion:^(WDGVideoConversation *conversation, NSError *error) {
+    WDGVideoOutgoingInvite *outgoingInvitation = [self.wilddogVideoClient inviteWithParticipantID:userID localStream:self.localStream conversationMode:WDGVideoConversationModeP2P completion:^(WDGVideoConversation *conversation, NSError *error) {
         __strong __typeof__(self) strongSelf = weakSelf;
         if (strongSelf == nil) {
             return;
@@ -143,7 +143,7 @@
 - (void)wilddogVideoClient:(WDGVideoClient *)videoClient didReceiveInvite:(WDGVideoIncomingInvite *)invite
 {
     UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil
-                                                                             message:[NSString stringWithFormat:@"%@ 邀请你进行视频通话", invite.fromUserID]
+                                                                             message:[NSString stringWithFormat:@"%@ 邀请你进行视频通话", invite.fromParticipantID]
                                                                       preferredStyle:UIAlertControllerStyleAlert];
 
     UIAlertAction *rejectAction = [UIAlertAction actionWithTitle:@"拒绝" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
@@ -194,7 +194,7 @@
 
 - (void)conversation:(WDGVideoConversation *)conversation didDisconnectParticipant:(WDGVideoParticipant *)participant
 {
-    [self showAlertWithTitle:@"通话结束" message:[NSString stringWithFormat:@"Disconnected from: %@",participant.userID]];
+    [self showAlertWithTitle:@"通话结束" message:[NSString stringWithFormat:@"Disconnected from: %@", participant.participantID]];
 
     [self.remoteStream detach:self.remoteVideoView];
     self.videoConversation = nil;
