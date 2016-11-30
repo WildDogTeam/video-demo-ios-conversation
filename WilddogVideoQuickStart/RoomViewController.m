@@ -174,6 +174,7 @@
 
 - (void)conversation:(WDGVideoConversation *)conversation didConnectParticipant:(WDGVideoParticipant *)participant
 {
+    // 将participant 的代理设置为自己，以便在获得音视频流时得到通知
     participant.delegate = self;
 
     self.actionButton.enabled = YES;
@@ -193,7 +194,7 @@
 
 - (void)participant:(WDGVideoParticipant *)participant didAddStream:(WDGVideoRemoteStream *)stream
 {
-    // 参与者成功加入会话，将参与者的视频流展示出来
+    // 获得参与者音视频流，将其展示出来
     NSLog(@"receive stream %@ from participant %@", stream, participant);
     self.remoteStream = stream;
     [self.remoteStream attach:self.remoteVideoView];
