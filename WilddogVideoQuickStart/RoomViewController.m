@@ -6,20 +6,20 @@
 //  Copyright © 2016年 liwuyang. All rights reserved.
 //
 
+#import <WilddogCore/WilddogCore.h>
 #import <WilddogSync/WilddogSync.h>
 #import <WilddogVideo/WilddogVideo.h>
 
 #import "RoomViewController.h"
 #import "UserListTableViewController.h"
 
-@interface RoomViewController ()<WDGVideoClientDelegate, WDGVideoConversationDelegate>
+@interface RoomViewController () <WDGVideoClientDelegate, WDGVideoConversationDelegate, WDGVideoParticipantDelegate>
 
 @property (weak, nonatomic) IBOutlet WDGVideoView *localVideoView;
 @property (weak, nonatomic) IBOutlet WDGVideoView *remoteVideoView;
 @property (weak, nonatomic) IBOutlet UIButton *actionButton;
 @property (weak, nonatomic) IBOutlet UILabel *wilddogIDLabel;
 
-@property (nonatomic, strong) WDGSyncReference *wilddogVideoReference;
 @property (nonatomic, strong) WDGSyncReference *usersReference;
 @property (nonatomic, strong) WDGVideoClient *wilddogVideoClient;
 @property (nonatomic, strong) WDGVideoLocalStream *localStream;
@@ -36,14 +36,10 @@
 {
     [super viewDidLoad];
 
-    // 这个路径是VideoSDK的交互路径，WilddogVideo可换成自定义路径
-    // 但采用Server-based模式时需要保证该交互路径和控制面板中的交互路径一致
-    self.wilddogVideoReference = [[[WDGSync sync] reference] child:@"wilddogVideo"];
-
     self.wilddogIDLabel.text = self.user.uid;
 
     // 认证成功，初始化Client
-    self.wilddogVideoClient = [[WDGVideoClient alloc] initWithSyncReference:self.wilddogVideoReference user:self.user];
+    self.wilddogVideoClient = [[WDGVideoClient alloc] initWithApp:[WDGApp defaultApp]];
     self.wilddogVideoClient.delegate = self;
 
     // 设置视频流以等比缩放并填充的方式显示。
@@ -113,7 +109,8 @@
 
     // 采用P2P模式，调用VideoSDK进行邀请
     __weak __typeof__(self) weakSelf = self;
-    WDGVideoOutgoingInvite *outgoingInvitation = [self.wilddogVideoClient inviteWithParticipantID:userID localStream:self.localStream conversationMode:WDGVideoConversationModeP2P completion:^(WDGVideoConversation *conversation, NSError *error) {
+    WDGVideoConnectOptions *connectOptions = [[WDGVideoConnectOptions alloc] initWithLocalStream:self.localStream];
+    WDGVideoOutgoingInvite *outgoingInvitation = [self.wilddogVideoClient inviteToConversationWithID:userID options:connectOptions completion:^(WDGVideoConversation *conversation, NSError *error) {
         __strong __typeof__(self) strongSelf = weakSelf;
         if (strongSelf == nil) {
             return;
@@ -152,7 +149,7 @@
 
     __weak __typeof__(self) weakSelf = self;
     UIAlertAction *acceptAction = [UIAlertAction actionWithTitle:@"接受" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-        [invite acceptWithCompletion:^(WDGVideoConversation *conversation, NSError *error) {
+        [invite acceptWithLocalStream:self.localStream completion:^(WDGVideoConversation *conversation, NSError *error) {
             __strong __typeof__(self) strongSelf = weakSelf;
             if (strongSelf == nil) {
                 return;
@@ -177,10 +174,9 @@
 
 - (void)conversation:(WDGVideoConversation *)conversation didConnectParticipant:(WDGVideoParticipant *)participant
 {
-    // 参与者成功加入会话，将参与者的视频流展示出来
-    NSLog(@"receive participant %@", participant);
-    self.remoteStream = participant.stream;
-    [self.remoteStream attach:self.remoteVideoView];
+    participant.delegate = self;
+
+    self.actionButton.enabled = YES;
     self.actionButton.titleLabel.text = @"挂断";
 }
 
@@ -194,10 +190,21 @@
 
 - (void)conversation:(WDGVideoConversation *)conversation didDisconnectParticipant:(WDGVideoParticipant *)participant
 {
-    [self showAlertWithTitle:@"通话结束" message:[NSString stringWithFormat:@"Disconnected from: %@", participant.participantID]];
+    [self showAlertWithTitle:@"通话结束" message:[NSString stringWithFormat:@"Disconnected from: %@", participant.ID]];
 
+    self.actionButton.titleLabel.text = @"用户列表";
     [self.remoteStream detach:self.remoteVideoView];
     self.videoConversation = nil;
+}
+
+#pragma mark - WDGVideoParticipantDelegate
+
+- (void)participant:(WDGVideoParticipant *)participant didAddStream:(WDGVideoRemoteStream *)stream
+{
+    // 参与者成功加入会话，将参与者的视频流展示出来
+    NSLog(@"receive stream %@ from participant %@", stream, participant);
+    self.remoteStream = stream;
+    [self.remoteStream attach:self.remoteVideoView];
 }
 
 #pragma mark - Helper
@@ -210,8 +217,8 @@
 
 - (void)createLocalStream
 {
-    WDGVideoLocalStreamConfiguration *configuration = [[WDGVideoLocalStreamConfiguration alloc] initWithVideoOption:WDGVideoConstraintsStandard audioOn:YES];
-    self.localStream = [self.wilddogVideoClient localStreamWithConfiguration:configuration];
+    WDGVideoLocalStreamOptions *localStreamOptions = [[WDGVideoLocalStreamOptions alloc] init];
+    self.localStream = [[WDGVideoLocalStream alloc] initWithOptions:localStreamOptions];
 }
 
 - (void)previewLocalStream
