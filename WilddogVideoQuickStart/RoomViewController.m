@@ -180,14 +180,6 @@
     self.actionButton.titleLabel.text = @"挂断";
 }
 
-- (void)conversation:(WDGVideoConversation *)conversation didFailToConnectParticipant:(WDGVideoParticipant *)participant error:(NSError *)error
-{
-    NSLog(@"failed to connect %@", participant);
-    [self showAlertWithTitle:@"连接失败" message:@""];
-
-    self.videoConversation = nil;
-}
-
 - (void)conversation:(WDGVideoConversation *)conversation didDisconnectParticipant:(WDGVideoParticipant *)participant
 {
     [self showAlertWithTitle:@"通话结束" message:[NSString stringWithFormat:@"Disconnected from: %@", participant.ID]];
@@ -218,6 +210,8 @@
 - (void)createLocalStream
 {
     WDGVideoLocalStreamOptions *localStreamOptions = [[WDGVideoLocalStreamOptions alloc] init];
+    localStreamOptions.audioOn = YES;
+    localStreamOptions.videoOption = WDGVideoConstraintsHigh;
     self.localStream = [[WDGVideoLocalStream alloc] initWithOptions:localStreamOptions];
 }
 
