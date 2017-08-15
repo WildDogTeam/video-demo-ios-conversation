@@ -2,4 +2,4 @@
 
 ## 文档
 
-[完整文档](https://docs.wilddog.com/quickstart/video/ios-conference.html)
+[完整文档](https://docs.wilddog.com/conversation/iOS/index.html)
