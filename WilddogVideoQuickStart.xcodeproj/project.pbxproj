@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1AC45A2083BF7A6A5B047FBF /* libPods-WilddogVideoQuickStartTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F47F1E9BA9A17086E9D8217 /* libPods-WilddogVideoQuickStartTests.a */; };
 		28162E941D87DF9200D22B14 /* UserListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28162E931D87DF9200D22B14 /* UserListTableViewController.m */; };
 		28C92F2C1D8692450098950B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C92F2B1D8692450098950B /* main.m */; };
 		28C92F2F1D8692450098950B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 28C92F2E1D8692450098950B /* AppDelegate.m */; };
@@ -50,9 +49,7 @@
 		28C92F541D86A1DE0098950B /* RoomViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RoomViewController.h; sourceTree = "<group>"; };
 		28C92F551D86A1DE0098950B /* RoomViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RoomViewController.m; sourceTree = "<group>"; };
 		4ED1E01ECC9D3764DC20A56A /* Pods-WilddogVideoQuickStart.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WilddogVideoQuickStart.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WilddogVideoQuickStart/Pods-WilddogVideoQuickStart.debug.xcconfig"; sourceTree = "<group>"; };
-		7BFCC5F30F8F0C92EE155E25 /* Pods-WilddogVideoQuickStartTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WilddogVideoQuickStartTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-WilddogVideoQuickStartTests/Pods-WilddogVideoQuickStartTests.debug.xcconfig"; sourceTree = "<group>"; };
 		81ED78F7C14D2C2C4F759EB1 /* libPods-WilddogVideoQuickStart.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WilddogVideoQuickStart.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		924F9C7FF90335BCD3A622AD /* Pods-WilddogVideoQuickStartTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WilddogVideoQuickStartTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-WilddogVideoQuickStartTests/Pods-WilddogVideoQuickStartTests.release.xcconfig"; sourceTree = "<group>"; };
 		9F47F1E9BA9A17086E9D8217 /* libPods-WilddogVideoQuickStartTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WilddogVideoQuickStartTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -69,7 +66,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1AC45A2083BF7A6A5B047FBF /* libPods-WilddogVideoQuickStartTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,8 +134,6 @@
 			children = (
 				4ED1E01ECC9D3764DC20A56A /* Pods-WilddogVideoQuickStart.debug.xcconfig */,
 				0966DCF5E06BD5481C4C2641 /* Pods-WilddogVideoQuickStart.release.xcconfig */,
-				7BFCC5F30F8F0C92EE155E25 /* Pods-WilddogVideoQuickStartTests.debug.xcconfig */,
-				924F9C7FF90335BCD3A622AD /* Pods-WilddogVideoQuickStartTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -180,12 +174,9 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 28C92F4C1D8692450098950B /* Build configuration list for PBXNativeTarget "WilddogVideoQuickStartTests" */;
 			buildPhases = (
-				9707EC1F968479B114418F3F /* [CP] Check Pods Manifest.lock */,
 				28C92F3C1D8692450098950B /* Sources */,
 				28C92F3D1D8692450098950B /* Frameworks */,
 				28C92F3E1D8692450098950B /* Resources */,
-				5F9FBE2FA50195F1A4BAC2AC /* [CP] Embed Pods Frameworks */,
-				2E0FAB78B96EEA0045E06C33 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -271,36 +262,6 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WilddogVideoQuickStart/Pods-WilddogVideoQuickStart-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		2E0FAB78B96EEA0045E06C33 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WilddogVideoQuickStartTests/Pods-WilddogVideoQuickStartTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5F9FBE2FA50195F1A4BAC2AC /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WilddogVideoQuickStartTests/Pods-WilddogVideoQuickStartTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		6970983A145DA54AC5A73500 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -329,21 +290,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-WilddogVideoQuickStart/Pods-WilddogVideoQuickStart-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		9707EC1F968479B114418F3F /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -519,7 +465,6 @@
 		};
 		28C92F4D1D8692450098950B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7BFCC5F30F8F0C92EE155E25 /* Pods-WilddogVideoQuickStartTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = WilddogVideoQuickStartTests/Info.plist;
@@ -532,7 +477,6 @@
 		};
 		28C92F4E1D8692450098950B /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 924F9C7FF90335BCD3A622AD /* Pods-WilddogVideoQuickStartTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				INFOPLIST_FILE = WilddogVideoQuickStartTests/Info.plist;

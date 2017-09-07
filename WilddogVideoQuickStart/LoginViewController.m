@@ -13,7 +13,8 @@
 
 @interface LoginViewController ()
 
-@property (weak, nonatomic) IBOutlet UITextField *textField;
+@property (weak, nonatomic) IBOutlet UITextField *videoField;
+@property (weak, nonatomic) IBOutlet UITextField *syncField;
 @property (strong, nonatomic) NSString *token;
 @property (strong, nonatomic) NSString *appId;
 
@@ -21,14 +22,23 @@
 
 @implementation LoginViewController
 
+-(void)viewDidLoad
+{
+    [super viewDidLoad];
+//    在这里写入默认的videoId以及syncId;
+    self.videoField.text =@"";
+    self.syncField.text =@"";
+}
+
 - (IBAction)clickBtn:(id)sender
 {
-    self.appId = @"wd4824959511jedimo";
-    if (![self.textField.text isEqualToString:@""]) {
-        self.appId = self.textField.text;
+    if(self.videoField.text.length ==0 || self.syncField.text.length==0){
+        NSLog(@"请填写videoId及syncId");
+        return;
     }
+    self.appId = self.videoField.text;
     
-    [WDGApp configureWithOptions:[[WDGOptions alloc] initWithSyncURL:[NSString stringWithFormat:@"https://%@.wilddogio.com", self.appId]]];
+    [WDGApp configureWithOptions:[[WDGOptions alloc] initWithSyncURL:[NSString stringWithFormat:@"https://%@.wilddogio.com", self.syncField.text]]];
 
     // 使用VideoSDK前必须经过WilddogAuth身份认证
     [[WDGAuth auth] signOut:nil];
