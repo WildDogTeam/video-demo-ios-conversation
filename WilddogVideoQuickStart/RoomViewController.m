@@ -49,7 +49,6 @@
     self.wilddogVideoClient = [WDGVideo sharedVideo];
     [self.wilddogVideoClient configureWithVideoAppId:_appId token:self.token];
     self.wilddogVideoClient.delegate = self;
-
     // 设置视频流以等比缩放并填充的方式。
     [self setVideoViewDisplayMode];
 
@@ -58,7 +57,7 @@
     [self previewLocalStream];
 
     // SDK本身不提供管理在线用户的接口，因此建立users节点管理在线用户列表
-    self.usersReference = [[[WDGSync sync] reference] child:@"bird/online"];
+    self.usersReference = [[[WDGSync sync] reference] child:@"users"];
     [[self.usersReference child:self.user.uid] setValue:@YES];
     [[self.usersReference child:self.user.uid] onDisconnectRemoveValue];
 
