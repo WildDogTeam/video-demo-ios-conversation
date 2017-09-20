@@ -13,7 +13,6 @@
 
 @interface LoginViewController ()
 
-@property (weak, nonatomic) IBOutlet UITextField *textField;
 @property (strong, nonatomic) NSString *token;
 @property (strong, nonatomic) NSString *appId;
 
@@ -22,10 +21,9 @@
 @implementation LoginViewController
 
 - (IBAction)clickBtn:(id)sender {
+    
+    // Set Video AppId.
     self.appId = @"wd4824959511jedimo";
-    if (![self.textField.text isEqualToString:@""]) {
-        self.appId = self.textField.text;
-    }
     
     [WDGApp configureWithOptions:[[WDGOptions alloc] initWithSyncURL:[NSString stringWithFormat:@"https://%@.wilddogio.com", self.appId]]];
     
