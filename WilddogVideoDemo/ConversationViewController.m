@@ -137,6 +137,9 @@
     UIAlertAction *cancelInviteAction = [UIAlertAction actionWithTitle:@"取消邀请" style:UIAlertActionStyleDestructive handler:^(UIAlertAction * action) {
         __strong __typeof__(self) strongSelf = weakSelf;
         [strongSelf.videoConversation close];
+        strongSelf.videoConversation = nil;
+        [strongSelf.actionButton setTitle:@"邀请用户" forState:UIControlStateNormal];
+        [strongSelf.actionButton setBackgroundColor:[UIColor colorWithRed:0 green:0.5 blue:1.0 alpha:0.7]];
     }];
     [alertController addAction:cancelInviteAction];
     
@@ -174,7 +177,7 @@
         [strongSelf.videoConversation acceptWithLocalStream:strongSelf.localStream];
         strongSelf.actionButton.enabled = YES;
         [strongSelf.actionButton setTitle:@"结束通话" forState:UIControlStateNormal];
-        [self.actionButton setBackgroundColor:[UIColor colorWithRed:1.0 green:0 blue:0 alpha:0.7]];
+        [strongSelf.actionButton setBackgroundColor:[UIColor colorWithRed:1.0 green:0 blue:0 alpha:0.7]];
     }];
     
     [alertController addAction:rejectAction];
