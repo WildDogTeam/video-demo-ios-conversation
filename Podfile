@@ -9,6 +9,6 @@ target 'WilddogVideoDemo' do
 
   # Pods for WilddogVideoDemo
   pod 'WilddogSync'
-  pod 'WilddogVideo’, '2.1.0-beta'
+  pod 'WilddogVideo’, '~> 2.1.0'
 
 end

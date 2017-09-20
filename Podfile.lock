@@ -14,7 +14,7 @@ PODS:
   - WilddogSync (2.3.11):
     - WilddogCore (~> 2.0.8)
     - WilddogWebSocket (~> 1.0.0)
-  - WilddogVideo (2.1.0-beta):
+  - WilddogVideo (2.1.1):
     - WilddogAuth (>= 2.0.2)
     - WilddogVideoBase (>= 2.0.0)
     - WilddogWebRTC (>= 58.0.11)
@@ -26,7 +26,7 @@ PODS:
 
 DEPENDENCIES:
   - WilddogSync
-  - WilddogVideo (= 2.1.0-beta)
+  - WilddogVideo (~> 2.1.0)
 
 SPEC CHECKSUMS:
   WilddogAuth: 79e4bbe52de7a78baa58ed97552652a2daa49274
@@ -34,11 +34,11 @@ SPEC CHECKSUMS:
   WilddogLogger: 30649562048a6021a002e16fa439e1cc5896a8b3
   WilddogNetworking: 0e7f80b0839f376fa4d613c602b7c4f72634e761
   WilddogSync: 9c48b0427000950b5278dfd696a4cf5f669a8607
-  WilddogVideo: 4a2cfe3aff6218a4cab537609b9e729e9d2820ab
+  WilddogVideo: ddbcb24681c4bec6e31ccb120081754112ccfb4d
   WilddogVideoBase: 6828e721a6c37f272b1fdabc0286da86a18eadd0
   WilddogWebRTC: 70d4346bfded11e154865b9d786ff30e063f55d3
   WilddogWebSocket: 0f1437b4d26cfcd3b85376cba55e03b202e0e1b4
 
-PODFILE CHECKSUM: 18d6d89ad424575af794d71a35911e7f7836e013
+PODFILE CHECKSUM: c97636e9b3804549e102c07e47924bfa5f14d1c2
 
 COCOAPODS: 1.2.0

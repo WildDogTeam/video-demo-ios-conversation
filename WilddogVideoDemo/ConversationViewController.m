@@ -58,6 +58,9 @@
     [self previewLocalStream];
     
     // SDK本身不提供管理在线用户的接口，因此建立users节点管理在线用户列表
+    WDGOptions *option = [[WDGOptions alloc] initWithSyncURL:@"https://wd4548698313swfjcn.wilddogio.com"];
+    [WDGApp configureWithOptions:option];
+    
     self.usersReference = [[[WDGSync sync] reference] child:@"users"];
     [[self.usersReference child:self.user.uid] setValue:@YES];
     [[self.usersReference child:self.user.uid] onDisconnectRemoveValue];
