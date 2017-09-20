@@ -8,13 +8,15 @@
 
 #import <WilddogCore/WilddogCore.h>
 #import <WilddogAuth/WilddogAuth.h>
+#import <WilddogVideo/WilddogVideo.h>
 #import "LoginViewController.h"
 #import "ConversationViewController.h"
 
 @interface LoginViewController ()
 
 @property (strong, nonatomic) NSString *token;
-@property (strong, nonatomic) NSString *appId;
+@property (strong, nonatomic) NSString *videoAppId;
+@property (strong, nonatomic) NSString *syncAppId;
 
 @end
 
@@ -22,10 +24,11 @@
 
 - (IBAction)clickBtn:(id)sender {
     
-    // Set Video AppId.
-    self.appId = @"wd4824959511jedimo";
+    // Set AppId.
+    self.syncAppId = @"wd4548698313swfjcn";
+    self.videoAppId = @"wd4824959511jedimo";
     
-    [WDGApp configureWithOptions:[[WDGOptions alloc] initWithSyncURL:[NSString stringWithFormat:@"https://%@.wilddogio.com", self.appId]]];
+    [WDGApp configureWithOptions:[[WDGOptions alloc] initWithSyncURL:[NSString stringWithFormat:@"https://%@.wilddogio.com", self.syncAppId]]];
     
     // 使用VideoSDK前必须经过WilddogAuth身份认证
     [[WDGAuth auth] signOut:nil];
@@ -42,6 +45,7 @@
         }
         [user getTokenWithCompletion:^(NSString * _Nullable idToken, NSError * _Nullable error) {
             strongSelf.token = idToken;
+            [[WDGVideoInitializer sharedInstance] configureWithVideoAppId:self.videoAppId token:idToken];
         }];
         
         [strongSelf performSegueWithIdentifier:@"RoomViewController" sender:user];
@@ -54,7 +58,7 @@
     ConversationViewController *destinationVC = (ConversationViewController *)[segue destinationViewController];
     destinationVC.user = sender;
     destinationVC.token = self.token;
-    destinationVC.appId = self.appId;
+    destinationVC.appId = self.videoAppId;
 }
 
 @end
