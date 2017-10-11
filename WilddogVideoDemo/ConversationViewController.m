@@ -8,11 +8,11 @@
 
 #import <WilddogCore/WilddogCore.h>
 #import <WilddogSync/WilddogSync.h>
-#import <WilddogVideo/WilddogVideo.h>
+#import <WilddogVideoCall/WilddogVideoCall.h>
 #import "ConversationViewController.h"
 #import "UserListTableViewController.h"
 
-@interface ConversationViewController () <WDGVideoDelegate, WDGConversationDelegate, WDGConversationStatsDelegate>
+@interface ConversationViewController () <WDGVideoCallDelegate, WDGConversationDelegate, WDGConversationStatsDelegate>
 
 // UI elements
 @property (weak, nonatomic) IBOutlet WDGVideoView *localVideoView;
@@ -27,7 +27,7 @@
 @property (nonatomic, strong) NSMutableArray *onlineUsers;
 
 // About video conversation
-@property (nonatomic, strong) WDGVideo *wilddogVideoClient;
+@property (nonatomic, strong) WDGVideoCall *wilddogVideoClient;
 @property (nonatomic, strong) WDGLocalStream *localStream;
 @property (nonatomic, strong) WDGRemoteStream *remoteStream;
 @property (nonatomic, strong) WDGConversation *videoConversation;
@@ -46,7 +46,7 @@
     self.wilddogIDLabel.text = self.user.uid;
     
     // 使用 token 初始化 Video Client。
-    self.wilddogVideoClient = [WDGVideo sharedVideo];
+    self.wilddogVideoClient = [WDGVideoCall sharedInstance];
     self.wilddogVideoClient.delegate = self;
     
     // 设置视频流以等比缩放并填充的方式。
@@ -157,9 +157,9 @@
     self.foregroundAlert = alertController;
 }
 
-#pragma mark - WDGVideoDelegate
+#pragma mark - WDGVideoCallDelegate
 
-- (void)wilddogVideo:(WDGVideo *)video didReceiveCallWithConversation:(WDGConversation *)conversation data:(NSString *)data {
+- (void)wilddogVideoCall:(WDGVideoCall *)videoCall didReceiveCallWithConversation:(WDGConversation *)conversation data:(NSString *)data {
     conversation.delegate = self;
     conversation.statsDelegate = self;
     

@@ -8,7 +8,7 @@
 
 #import <WilddogCore/WilddogCore.h>
 #import <WilddogAuth/WilddogAuth.h>
-#import <WilddogVideo/WilddogVideo.h>
+#import <WilddogVideoCall/WilddogVideoCall.h>
 #import "LoginViewController.h"
 #import "ConversationViewController.h"
 
