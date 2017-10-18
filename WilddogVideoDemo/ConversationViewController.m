@@ -278,7 +278,7 @@
 - (void)createLocalStream {
     WDGLocalStreamOptions *localStreamOptions = [[WDGLocalStreamOptions alloc] init];
     localStreamOptions.shouldCaptureAudio = YES;
-    localStreamOptions.dimension = WDGVideoDimensions360p;
+    localStreamOptions.dimension = self.resolutionRatio;
     self.localStream = [[WDGLocalStream alloc] initWithOptions:localStreamOptions];
 }
 

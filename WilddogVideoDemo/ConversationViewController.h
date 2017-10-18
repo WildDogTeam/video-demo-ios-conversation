@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 #import <WilddogAuth/WilddogAuth.h>
+#import <WilddogVideoBase/WDGLocalStreamOptions.h>
+
 
 @interface ConversationViewController : UIViewController
 
@@ -16,5 +18,7 @@
 @property (nonatomic, strong) NSString *appId;
 
 @property (nonatomic, assign) BOOL busyFlag;
+@property (nonatomic, assign) WDGVideoDimensions resolutionRatio;
 
 @end
+

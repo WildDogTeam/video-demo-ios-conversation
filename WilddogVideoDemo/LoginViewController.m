@@ -17,6 +17,7 @@
 @property (strong, nonatomic) NSString *token;
 @property (strong, nonatomic) NSString *videoAppId;
 @property (strong, nonatomic) NSString *syncAppId;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *resolutionRatio;
 
 @end
 
@@ -59,6 +60,20 @@
     destinationVC.user = sender;
     destinationVC.token = self.token;
     destinationVC.appId = self.videoAppId;
+    switch (self.resolutionRatio.selectedSegmentIndex) {
+        case 0:
+            destinationVC.resolutionRatio = WDGVideoDimensions360p;
+            break;
+        case 1:
+            destinationVC.resolutionRatio = WDGVideoDimensions480p;
+            break;
+        case 2:
+            destinationVC.resolutionRatio = WDGVideoDimensions720p;
+            break;
+        default:
+            destinationVC.resolutionRatio = WDGVideoDimensions360p;
+            break;
+    }
 }
 
 @end
