@@ -59,29 +59,15 @@
                                     <action selector="clickBtn:" destination="CxY-Ok-2Au" eventType="touchUpInside" id="OpM-I9-DzP"/>
                                 </connections>
                             </button>
-                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="rsJ-na-x0M">
-                                <rect key="frame" x="84" y="620" width="207" height="29"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="207" id="9Zb-Me-uSg"/>
-                                </constraints>
-                                <segments>
-                                    <segment title="360p"/>
-                                    <segment title="480p"/>
-                                    <segment title="720p"/>
-                                </segments>
-                            </segmentedControl>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="RwE-Wm-ryH" firstAttribute="top" secondItem="rsJ-na-x0M" secondAttribute="bottom" constant="19" id="6ox-XW-539"/>
-                            <constraint firstItem="rsJ-na-x0M" firstAttribute="centerX" secondItem="EED-og-u6F" secondAttribute="centerX" id="OBo-rn-p5f"/>
-                            <constraint firstItem="ai8-7x-lrJ" firstAttribute="centerY" secondItem="EED-og-u6F" secondAttribute="centerY" id="gRZ-jI-KXi"/>
-                            <constraint firstItem="ai8-7x-lrJ" firstAttribute="centerX" secondItem="EED-og-u6F" secondAttribute="centerX" id="p5Q-3g-dQ8"/>
+                            <constraint firstItem="ai8-7x-lrJ" firstAttribute="centerX" secondItem="EED-og-u6F" secondAttribute="centerX" id="Loh-oF-5qp"/>
+                            <constraint firstItem="ai8-7x-lrJ" firstAttribute="centerY" secondItem="EED-og-u6F" secondAttribute="centerY" id="TrN-f8-PRV"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="匿名登录" id="vY1-gl-OnV"/>
                     <connections>
-                        <outlet property="resolutionRatio" destination="rsJ-na-x0M" id="ESE-ZU-pxl"/>
                         <segue destination="7pH-Wb-6bf" kind="show" identifier="RoomViewController" id="X7E-fm-7LM">
                             <nil key="action"/>
                         </segue>

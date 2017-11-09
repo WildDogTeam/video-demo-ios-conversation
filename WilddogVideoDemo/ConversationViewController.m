@@ -72,6 +72,9 @@
     [self.videoConversation close];
     [self.remoteStream detach:self.remoteVideoView];
     self.remoteStream = nil;
+    [self.localStream detach:self.localVideoView];
+    [self.localStream close];
+    self.localStream = nil;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
     [[self.usersReference child:self.user.uid] removeValue];
 }

@@ -26,8 +26,8 @@
 - (IBAction)clickBtn:(id)sender {
     
     // Set AppId.
-    self.syncAppId = @"wd4548698313swfjcn";
-    self.videoAppId = @"wd4824959511jedimo";
+    self.syncAppId = @"wd1621490197hjoglv";
+    self.videoAppId = @"wd4449761657cslfcf";
     
     [WDGApp configureWithOptions:[[WDGOptions alloc] initWithSyncURL:[NSString stringWithFormat:@"https://%@.wilddogio.com", self.syncAppId]]];
     
