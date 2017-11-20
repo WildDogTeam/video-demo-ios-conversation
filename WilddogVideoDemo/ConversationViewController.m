@@ -256,12 +256,12 @@
 
 - (void)conversation:(WDGConversation *)conversation didUpdateLocalStreamStatsReport:(WDGLocalStreamStatsReport *)report {
     // 显示本地媒体流统计信息
-    self.localStatsLabel.text = [NSString stringWithFormat:@"上传: %@", report.description];
+    self.localStatsLabel.text = [NSString stringWithFormat:@"上传: %@ - %@", report.localCandidateType, report.description];
 }
 
 - (void)conversation:(WDGConversation *)conversation didUpdateRemoteStreamStatsReport:(WDGRemoteStreamStatsReport *)report {
     // 显示远端媒体流统计信息
-    self.remoteStatsLabel.text = [NSString stringWithFormat:@"下载: %@", report.description];
+    self.remoteStatsLabel.text = [NSString stringWithFormat:@"下载: %@ - %@", report.remoteCandidateType, report.description];
 }
 
 
